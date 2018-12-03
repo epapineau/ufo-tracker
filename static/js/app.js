@@ -23,31 +23,35 @@ button.on("click", function(){
     searchCountry = country.property("value").toLowerCase().replace(" ", "");
     searchShape = shape.property("value").toLowerCase().replace(" ", "");
 
-    console.log(searchCity, searchState, searchCountry, searchShape);
-
     // Setup table variable
     var tBody = d3.select("tbody");
 
+    // Empty table in case it was already populated
+    tBody.selectAll("td").remove()
+
     // Loop through data to find matching dates
-    var matches = data.map(sighting => {
+    var matches = tableData.map(sighting => {
         // Format date string for matching
         var dataDate = new Date(sighting.datetime)
 
-        if(dataDate.getTime() === searchDate.getTime() &&
-            sighting.city === searchCity &&
-            sighting.state === searchState &&
-            sighting.country === searchCountry &&
-            sighting.shape === searchShape){
-                
-            // Append matches to table
-            tBody.append("tr");
-            tBody.append("td").text(sighting.datetime);
-            tBody.append("td").text(sighting.city);
-            tBody.append("td").text(sighting.state);
-            tBody.append("td").text(sighting.country);
-            tBody.append("td").text(sighting.shape);
-            tBody.append("td").text(sighting.durationMinutes);
-            tBody.append("td").text(sighting.comments);
+        if(dataDate.getTime() === searchDate.getTime()){
+            if(sighting.city === searchCity || searchCity.length === 0){
+                if(sighting.state === searchState || searchState.length === 0){
+                    if(sighting.country === searchCountry || searchCountry.length === 0){
+                        if(sighting.shape === searchShape || searchShape.length === 0){
+                            // Append matches to table
+                            tBody.append("tr");
+                            tBody.append("td").text(sighting.datetime);
+                            tBody.append("td").text(sighting.city);
+                            tBody.append("td").text(sighting.state);
+                            tBody.append("td").text(sighting.country);
+                            tBody.append("td").text(sighting.shape);
+                            tBody.append("td").text(sighting.durationMinutes);
+                            tBody.append("td").text(sighting.comments);
+                        }
+                    }
+                }
+            }   
         }
     });
 });
