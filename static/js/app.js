@@ -13,8 +13,11 @@ button.on("click", function(){
     // Prevent form refreshing
     d3.event.preventDefault();
 
-    // Format search date for matching
+    // Check length and format search date for matching
     var searchDate = date.property("value");
+    if(searchDate.length === 0){
+        var flag = true;
+    }
     searchDate = new Date(searchDate);
 
     // Format remaining search terms
@@ -34,7 +37,8 @@ button.on("click", function(){
         // Format date string for matching
         var dataDate = new Date(sighting.datetime)
 
-        if(dataDate.getTime() === searchDate.getTime()){
+        // Filter matches
+        if(dataDate.getTime() === searchDate.getTime() || flag){
             if(sighting.city === searchCity || searchCity.length === 0){
                 if(sighting.state === searchState || searchState.length === 0){
                     if(sighting.country === searchCountry || searchCountry.length === 0){
